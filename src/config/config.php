@@ -63,6 +63,7 @@ return [
      */
     'error_messages' => [
         'wrong_otp' => "The 'One Time Password' typed was wrong.",
+        'unknown_otp' => "Unknown 'One Time Password'.",
     ],
 
     /*

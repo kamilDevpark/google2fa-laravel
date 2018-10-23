@@ -25,7 +25,7 @@ trait Session
      */
     public function sessionGet($var = null, $default = null)
     {
-        return $this->getRequest()->session()->get(
+        return $this->getSessionProvider()->get(
             $this->makeSessionVarName($var),
             $default
         );
@@ -41,7 +41,7 @@ trait Session
      */
     protected function sessionPut($var, $value)
     {
-        $this->getRequest()->session()->put(
+        $this->getSessionProvider()->put(
             $this->makeSessionVarName($var),
             $value
         );
@@ -56,9 +56,21 @@ trait Session
      */
     protected function sessionForget($var = null)
     {
-        $this->getRequest()->session()->forget(
+        $this->getSessionProvider()->forget(
             $this->makeSessionVarName($var)
         );
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Session\Session
+     */
+    protected function getSessionProvider()
+    {
+        if ($this->getRequest()->hasSession()) {
+            return $this->getRequest()->session();
+        }
+
+        return app('session.store');
     }
 
     abstract protected function config($string, $children = []);
